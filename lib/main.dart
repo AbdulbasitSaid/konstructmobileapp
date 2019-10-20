@@ -1,33 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:konstructapp/screens/home_screen.dart';
-import 'package:konstructapp/screens/new_event_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:konstructapp/screens/main_screen.dart';
+import 'package:konstructapp/util/const.dart';
 
 import 'screens/landing_screen.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool isDark = false;
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: isDark ? Constants.darkPrimary : Constants.lightPrimary,
+      statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Tubo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
+      debugShowCheckedModeBanner: false,
+      title: Constants.appName,
+      theme: isDark ? Constants.darkTheme : Constants.lightTheme,
       home: LandingScreen(),
       routes: {
-        HomeScreen.routeName: (context) => HomeScreen(),
-        NewEventScreen.routeName: (context) => NewEventScreen(),
+        MainScreen.routName: (context) => MainScreen(),
       },
     );
   }
